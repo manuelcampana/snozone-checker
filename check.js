@@ -1,52 +1,19 @@
-import { chromium } from "playwright";
+import fetch from "node-fetch";
 
-(async () => {
+const url = "https://snozoneuk.com/booking/ajaxGrouped.php?getGroupDates=1&productId=857&locationId=1&qty=1&newDate=2026-05-01&getminprice=0";
 
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+async function check() {
 
-  await page.goto("https://snozoneuk.com/holiday-camps");
+  const res = await fetch(url);
+  const text = await res.text();
 
-  // click snowboard holiday camps "Book now"
-  await page.locator("text=Snowboard Holiday Camps").locator("..").getByRole("button", { name: "Book now" }).click();
+  console.log("API response:", text);
 
-  await page.waitForSelector("select");
-
-  // Milton Keynes
-  await page.selectOption("select:nth-of-type(1)", { label: "Milton Keynes" });
-
-  // Week
-  await page.selectOption("select:nth-of-type(2)", { label: "Week" });
-
-  // quantity
-  await page.fill("input", "1");
-
-  await page.getByRole("button", { name: "Continue" }).click();
-
-  await page.waitForSelector(".ui-datepicker");
-
-  // move calendar until May
-  for (let i = 0; i < 12; i++) {
-
-    const month = await page.locator(".ui-datepicker-month").innerText();
-
-    if (month.includes("May")) break;
-
-    await page.click(".ui-datepicker-next");
+  if (text !== "[]") {
+    console.log("DATES AVAILABLE");
+    process.exit(1); // forces GitHub Action to fail so you notice
   }
 
-  const availableDays = await page.locator(
-    'td[data-handler="selectDay"][data-month="4"]'
-  ).count();
+}
 
-  console.log("Available days:", availableDays);
-
-  if (availableDays > 0) {
-    console.log("MAY DATES AVAILABLE");
-  }
-
-  await page.screenshot({ path: "calendar.png" });
-
-  await browser.close();
-
-})();
+check();
