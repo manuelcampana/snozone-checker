@@ -1,7 +1,0 @@
-{
-  "name": "snozone-checker",
-  "type": "module",
-  "dependencies": {
-    "playwright": "^1.42.0"
-  }
-}
