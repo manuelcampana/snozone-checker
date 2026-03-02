@@ -1,9 +1,8 @@
-name: Snozone Availability Check
+name: Snozone Check
 
 on:
   schedule:
     - cron: "0 * * * *"
-
   workflow_dispatch:
 
 jobs:
@@ -13,16 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+      - run: npm install node-fetch
 
-      - name: Install browsers
-        run: npx playwright install chromium
-
-      - name: Run checker
-        run: node check.js
+      - run: node check.js
