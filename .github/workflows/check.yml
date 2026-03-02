@@ -1,4 +1,4 @@
-name: Snozone Check
+name: Snozone Availability
 
 on:
   schedule:
@@ -16,6 +16,5 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm install node-fetch
-
-      - run: node check.js
+      - name: Run checker
+        run: node check.js
