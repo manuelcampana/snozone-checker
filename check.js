@@ -1,8 +1,7 @@
-import fetch from "node-fetch";
+const url =
+"https://snozoneuk.com/booking/ajaxGrouped.php?getGroupDates=1&productId=857&locationId=1&qty=1&newDate=2026-05-25&getminprice=0";
 
-const url = "https://snozoneuk.com/booking/ajaxGrouped.php?getGroupDates=1&productId=857&locationId=1&qty=1&newDate=2026-05-01&getminprice=0";
-
-async function check() {
+async function run() {
 
   const res = await fetch(url);
   const text = await res.text();
@@ -10,10 +9,10 @@ async function check() {
   console.log("API response:", text);
 
   if (text !== "[]") {
-    console.log("DATES AVAILABLE");
-    process.exit(1); // forces GitHub Action to fail so you notice
+    console.log("DATES AVAILABLE FOR 25–29 MAY");
+    process.exit(1); // fail workflow -> triggers GitHub notification
   }
 
 }
 
-check();
+run();
